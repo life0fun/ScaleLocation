@@ -24,8 +24,10 @@ as the first entry in the message array automatically.
 When a broker receives the msg, the nexthop of the message is the first entry in the body array.
 
 To start two brokers, give the name of the broker and a list of its peer brokers.
+
 ```bash
     coffee rtbroker.coffee b1 b2
+
     coffee rtbroker.coffee b2 b1
 ```
 
