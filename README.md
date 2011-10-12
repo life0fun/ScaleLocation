@@ -24,19 +24,27 @@ as the first entry in the message array automatically.
 When a broker receives the msg, the nexthop of the message is the first entry in the body array.
 
 To start two brokers, give the name of the broker and a list of its peer brokers.
+```bash
     coffee rtbroker.coffee b1 b2
     coffee rtbroker.coffee b2 b1
+```
 
 once started, each broker's cloud BE will connect to the peer's FE. 
 The complete links among peers are established.
 
 ## Client
 Each client is connected to one broker's cloud FE. 
+
+```bash
     coffee wsclient b1
+```
 
 ## Worker
 Each worker belongs to one broker. Once worker started, it will connect to its broker's local BE.
+
+```bash
     coffee wkserver.coffee b2
+```
 
 ## Architecture that scales
 On the client side, we divide clients into subsets. Each client send requests to one broker for service.
