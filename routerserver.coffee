@@ -1,8 +1,8 @@
 #!/usr/bin/env coffee
 #
-# Client = require('rtclient').Client
-# client = new Client('CLI')
-# client.ready()
+# RouterServer = require('routerserver').RouterServer
+# server = new RouterServer('SRV')
+# server.ready()
 
 EventEmitter = require('events').EventEmitter
 path = require 'path'
@@ -11,7 +11,7 @@ ctx = require 'zeromq'
 class Node extends EventEmitter
 	constructor: (@_ID) ->
 
-class Client extends Node
+class RouterServer extends Node
 	constructor: (@_ID) ->
 		@sock = ctx.createSocket('router')
 		@sock.identity = @_ID
@@ -19,22 +19,17 @@ class Client extends Node
 
 	# factory pattern
 	@create: (name, option) ->
-		cli = new Client(name)
+		rter = new RouterServer(name)
 		if typeof options is 'object'
 			for own key, value of options
-				cli[key] = value
-		return cli
+				rter[key] = value
 
-	ready: (host, port) ->
-		host ?= 'localhost'
-		port ?= 5555
-		@sock.connect("tcp://"+host+":"+port)
-		console.log @_ID + ' client connected to ' + host
-		self = this
-		tof = do (self) ->
-			-> # return a func, wrap with the passed in sock
-				self.sendMsg 'SRV', [ 'hello from cli']
-		setTimeout tof, 1000
+		return rter
+
+	ready: ->
+		@sock.bind 'tcp://*:5555', (err) =>
+			console.log 'server ' + @_ID + ' listening to 5555, ' + err
+		console.log @_ID + ' ready...'
 
 	parseMsg: (args) ->
 		msg = []
@@ -54,15 +49,20 @@ class Client extends Node
 	# process msg sent to worker
 	processMsg: (msg) ->
 		from = msg.shift()
-		console.log 'client recvd rep <<< ', msg.toString()
+		console.log 'server handle req <<< ', msg.toString()
 		@sendMsg from, msg
 
+# when sending to req socket, you got to have '' as delimiter.
+# req type socket is relying on '' delimt to recv msg
 	sendMsg: (addr, msg) ->
-		msg.unshift addr  #prepend dest addr first
-		console.log 'cli >>> ', msg
+		msg.unshift addr
+		console.log @_ID + ' >>> ', addr, msg
 		@sock.send.apply @sock, msg
 
-#exports.Client = Client
-exports.create = Client.create
-#client = new Client('CLI')
-#client.ready(process.argv[2], process.argv[3])
+
+#exports.RouterServer = RouterServer
+exports.create = RouterServer.create
+
+#router = new RouterServer('SRV')
+#router.ready()
+
