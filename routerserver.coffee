@@ -1,8 +1,8 @@
 #!/usr/bin/env coffee
 #
-# RouterServer = require('routerserver').RouterServer
-# server = new RouterServer('SRV')
-# server.ready()
+#RS = require 'routerserver'
+#router = RS.create('SRV')
+#router.ready()
 
 EventEmitter = require('events').EventEmitter
 path = require 'path'
@@ -60,9 +60,9 @@ class RouterServer extends Node
 		@sock.send.apply @sock, msg
 
 
-#exports.RouterServer = RouterServer
 exports.create = RouterServer.create
 
-#router = new RouterServer('SRV')
+#RS = require 'routerserver'
+#router = RS.create('SRV')
 #router.ready()
 

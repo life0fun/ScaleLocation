@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 #
-# Client = require('rtclient').Client
-# client = new Client('CLI')
+# CLI = require('rtclient')
+# client = CLI.create('CLI')
 # client.ready()
 
 EventEmitter = require('events').EventEmitter
@@ -62,7 +62,6 @@ class Client extends Node
 		console.log 'cli >>> ', msg
 		@sock.send.apply @sock, msg
 
-#exports.Client = Client
 exports.create = Client.create
 #client = new Client('CLI')
 #client.ready(process.argv[2], process.argv[3])

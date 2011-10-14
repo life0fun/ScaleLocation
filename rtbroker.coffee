@@ -23,6 +23,14 @@ class Broker extends Node
 		@_WORKERS = []
 		@bindEvent()
 
+	# factory pattern
+	@create: (name, option) ->
+		bk = new Broker(name)
+		if typeof options is 'object'
+			for own key, value of options
+				bk[key] = value
+		return bk
+
 	ready: (me, peer) ->
 		@_ID = me
 		@_PEER = peer
@@ -117,7 +125,7 @@ class Broker extends Node
 		console.log @_ID + ' >>> ', peer, msg
 		sock.send.apply sock, msg
 
-exports.Broker = Broker
+exports.create = Broker.create
 
 broker = new Broker()
 broker.ready(process.argv[2], process.argv[3])
