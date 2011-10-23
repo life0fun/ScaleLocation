@@ -1,5 +1,8 @@
 #!/usr/bin/env coffee
 #
+# when router get a msg, the first argument is the sender's addr
+# this sender's addr is added by zmp implicitly as part of envelop.
+#
 #RS = require 'routerserver'
 #router = RS.create('SRV')
 #router.ready()

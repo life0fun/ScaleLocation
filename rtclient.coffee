@@ -6,7 +6,6 @@
 
 EventEmitter = require('events').EventEmitter
 path = require 'path'
-#ctx = require 'zeromq'
 ctx = require 'zmq'
 
 class Node extends EventEmitter
