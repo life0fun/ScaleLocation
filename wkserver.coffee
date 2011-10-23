@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 #
 
-ctx = require 'zeromq'
+ctx = require 'zmq'
 EventEmitter = require('events').EventEmitter
 
 class Node extends EventEmitter

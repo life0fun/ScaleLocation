@@ -6,7 +6,8 @@
 
 EventEmitter = require('events').EventEmitter
 path = require 'path'
-ctx = require 'zeromq'
+#ctx = require 'zeromq'
+ctx = require 'zmq'
 
 class Node extends EventEmitter
 	constructor: (@_ID) ->
@@ -14,6 +15,7 @@ class Node extends EventEmitter
 class Client extends Node
 	constructor: (@_ID) ->
 		@sock = ctx.createSocket('router')
+		#@sock = ctx.createSocket('dealer')
 		@sock.identity = @_ID
 		@bindEvent()
 
@@ -58,10 +60,10 @@ class Client extends Node
 		@sendMsg from, msg
 
 	sendMsg: (addr, msg) ->
-		msg.unshift addr  #prepend dest addr first
+		msg.unshift addr  #prepend dest addr first, do not need this if sock is dealer.
 		console.log 'cli >>> ', msg
 		@sock.send.apply @sock, msg
 
 exports.create = Client.create
-#client = new Client('CLI')
-#client.ready(process.argv[2], process.argv[3])
+client = new Client('CLI')
+client.ready(process.argv[2], process.argv[3])

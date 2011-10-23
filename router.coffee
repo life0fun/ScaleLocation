@@ -4,7 +4,7 @@
 # when sending to req socket, you got to have '' as delimiter.
 # req type socket is relying on '' delimt to recv msg
 
-ctx = require 'zeromq'
+ctx = require 'zmq'
 
 router = ctx.createSocket('router')
 router.identity = 'SRV'

@@ -6,7 +6,7 @@
 # XXX when sending msg from router to req sock, you must have to have '' as delimiter.
 # req sock is relying on that to apart msg body
 
-ctx = require 'zeromq'
+ctx = require 'zmq'
 EventEmitter = require('events').EventEmitter
 
 class Node extends EventEmitter

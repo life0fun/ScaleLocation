@@ -6,7 +6,8 @@
 
 EventEmitter = require('events').EventEmitter
 path = require 'path'
-ctx = require 'zeromq'
+#ctx = require 'zeromq'
+ctx = require 'zmq'
 
 class Node extends EventEmitter
 	constructor: (@_ID) ->
@@ -48,8 +49,8 @@ class RouterServer extends Node
 
 	# process msg sent to worker
 	processMsg: (msg) ->
+		console.log 'Req <<< ', msg.toString()
 		from = msg.shift()
-		console.log 'server handle req <<< ', msg.toString()
 		@sendMsg from, msg
 
 # when sending to req socket, you got to have '' as delimiter.
@@ -62,7 +63,5 @@ class RouterServer extends Node
 
 exports.create = RouterServer.create
 
-#RS = require 'routerserver'
-#router = RS.create('SRV')
-#router.ready()
-
+router = new RouterServer('SRV')
+router.ready()
